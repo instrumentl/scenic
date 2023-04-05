@@ -38,7 +38,7 @@ module Scenic
         def on_side_by_side(name, new_table_name, temporary_id)
           indexes = Indexes.new(connection: connection).on(name)
           indexes.each do |index|
-            old_name = "#{index.index_name}_old_#{temporary_id}"
+            old_name = "predrop_index_#{temporary_id}"
             connection.rename_index(name, index.index_name, old_name)
           end
           yield
