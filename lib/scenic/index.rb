@@ -37,7 +37,7 @@ module Scenic
     # the index against a different object name.
     #
     # @param object_name [String] The name of the object that has the index
-    def with_other_object_name(object_name:)
+    def with_other_object_name(object_name)
       old_prefix = "CREATE INDEX #{@index_name} ON #{@object_name}"
       new_prefix = "CREATE INDEX #{@index_name} ON #{object_name}"
       unless @definition.start_with? old_prefix
