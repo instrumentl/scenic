@@ -43,8 +43,13 @@ module Scenic
     #
     # @param object_name [String] The name of the object that has the index
     def with_other_object_name(object_name)
-      old_prefix = "CREATE INDEX #{@index_name} ON #{@schema_name}.#{@object_name}"
-        new_prefix = "CREATE INDEX #{@index_name} ON #{@schema_name}.#{object_name}"
+      type = if @definition.startswith("CREATE UNIQUE")
+               "CREATE UNIQUE INDEX"
+             else
+               "CREATE INDEX"
+             end
+      old_prefix = "#{type} #{@index_name} ON #{@schema_name}.#{@object_name}"
+      new_prefix = "#{type} #{@index_name} ON #{@schema_name}.#{object_name}"
       unless @definition.start_with? old_prefix
         raise "Unhandled index definition: '#{@definition}' (expected to start with '#{old_prefix}'"
       end
