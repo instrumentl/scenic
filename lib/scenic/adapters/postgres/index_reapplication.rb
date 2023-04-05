@@ -39,6 +39,8 @@ module Scenic
           indexes = Indexes.new(connection: connection).on(name)
           indexes.each do |index|
             old_name = "#{index.index_name}_old_#{temporary_id}"
+            connection.execute "ALTER INDEX #{quote_table_name(name)} "\
+              "RENAME TO #{quote_table_name(new_name)};"
             connection.rename_index(index.index_name, old_name)
           end
           yield
