@@ -46,7 +46,7 @@ module Scenic
       old_prefix = "CREATE INDEX #{@index_name} ON #{@schema_name}.#{@object_name}"
         new_prefix = "CREATE INDEX #{@index_name} ON #{@schema_name}.#{object_name}"
       unless @definition.start_with? old_prefix
-        raise "Unhandled index definition: #{@definition}"
+        raise "Unhandled index definition: '#{@definition}' (expected to start with '#{old_prefix}'"
       end
       tweaked_definition = new_prefix + @definition.slice((old_prefix.size)..)
       self.class.new(
