@@ -49,7 +49,7 @@ module Scenic
         raise "Unhandled index definition: #{@definition}"
       end
       tweaked_definition = new_prefix + @definition.slice((old_prefix.size)..)
-      new(object_name: object_name, index_name: @index_name, definition: tweaked_definition)
+      self.class.new(object_name: object_name, index_name: @index_name, definition: tweaked_definition)
     end
   end
 end
