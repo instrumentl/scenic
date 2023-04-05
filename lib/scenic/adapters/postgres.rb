@@ -175,11 +175,21 @@ module Scenic
           IndexReapplication.new(connection: connection).on_side_by_side(
             name, new_name, session_id
           ) do
+            warn "STAGE 1; pausing"
+            sleep 10
             create_materialized_view(new_name, sql_definition, no_data: no_data)
+            warn "STAGE 2; pausing"
+            sleep 10
           end
           rename_materialized_view(name, old_name)
+          warn "STAGE 3; pausing"
+          sleep 10
           rename_materialized_view(new_name, name)
+          warn "STAGE 4; pausing"
+          sleep 10
           drop_materialized_view(old_name)
+          warn "STAGE 5; pausing"
+          sleep 10
         else
           IndexReapplication.new(connection: connection).on(name) do
             drop_materialized_view(name)
@@ -223,8 +233,6 @@ module Scenic
       #
       # @return [void]
       def rename_index(name, new_name)
-        execute "ALTER INDEX #{quote_table_name(name)} "\
-                "RENAME TO #{quote_table_name(new_name)};"
       end
 
       # Refreshes a materialized view from its SQL schema.
