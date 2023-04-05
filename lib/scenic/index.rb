@@ -32,5 +32,19 @@ module Scenic
       @index_name = index_name
       @definition = definition
     end
+
+    # Return a new instance of Index with the definition changed to create
+    # the index against a different object name.
+    #
+    # @param object_name [String] The name of the object that has the index
+    def with_other_object_name(object_name:)
+      old_prefix = "CREATE INDEX #{@index_name} ON #{@object_name}"
+      new_prefix = "CREATE INDEX #{@index_name} ON #{object_name}"
+      unless @definition.start_with? old_prefix
+        raise "Unhandled index definition: #{@definition}"
+      end
+      tweaked_definition = new_prefix + @definition.slice((old_prefix.size)..)
+      new(object_name: object_name, index_name: @index_name, definition: tweaked_definition)
+    end
   end
 end
