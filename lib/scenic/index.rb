@@ -43,7 +43,7 @@ module Scenic
     #
     # @param object_name [String] The name of the object that has the index
     def with_other_object_name(object_name)
-      type = if @definition.startswith("CREATE UNIQUE")
+      type = if @definition.start_with? "CREATE UNIQUE"
                "CREATE UNIQUE INDEX"
              else
                "CREATE INDEX"
