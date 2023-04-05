@@ -22,15 +22,20 @@ module Scenic
     #   "CREATE INDEX index_users_on_email ON users USING btree (email)"
     attr_reader :definition
 
+    # The schema under which the index is defined
+    # @return [String]
+    attr_reader :schema_name
+
     # Returns a new instance of Index
     #
     # @param object_name [String] The name of the object that has the index
     # @param index_name [String] The name of the index
     # @param definition [String] The SQL statements that defined the index
-    def initialize(object_name:, index_name:, definition:)
+    def initialize(object_name:, index_name:, definition:, schema_name:)
       @object_name = object_name
       @index_name = index_name
       @definition = definition
+      @schema_name = schema_name
     end
 
     # Return a new instance of Index with the definition changed to create
@@ -38,8 +43,8 @@ module Scenic
     #
     # @param object_name [String] The name of the object that has the index
     def with_other_object_name(object_name)
-      old_prefix = "CREATE INDEX #{@index_name} ON #{@object_name}"
-      new_prefix = "CREATE INDEX #{@index_name} ON #{object_name}"
+      old_prefix = "CREATE INDEX #{@index_name} ON #{@schema_name}.#{@object_name}"
+        new_prefix = "CREATE INDEX #{@index_name} ON #{@schema_name}.#{object_name}"
       unless @definition.start_with? old_prefix
         raise "Unhandled index definition: #{@definition}"
       end
